@@ -105,6 +105,15 @@ config THREAD_INFO_IN_TASK
 	  One subtle change that will be needed is to use try_get_task_stack()
 	  and put_task_stack() in save_thread_stack_tsk() and get_wchan().
 
+config BS_SCHED
+	bool "Baby Scheduler"
+	default y
+	select TICK_CPU_ACCOUNTING
+	select PREEMPT
+	help
+	  This is a Deadline version of Baby Scheduler.
+
+
 menu "General setup"
 
 config ZEN_INTERACTIVE
@@ -873,7 +882,7 @@ endif
 config UCLAMP_TASK
 	bool "Enable utilization clamping for RT/FAIR tasks"
 	depends on CPU_FREQ_GOV_SCHEDUTIL
-	depends on !SCHED_ALT
+	depends on !BS_SCHED
 	help
 	  This feature enables the scheduler to track the clamped utilization
 	  of each CPU based on RUNNABLE tasks scheduled on that CPU.
@@ -1040,6 +1049,7 @@ config CGROUP_WRITEBACK
 
 menuconfig CGROUP_SCHED
 	bool "CPU controller"
+	depends on !BS_SCHED
 	default n
 	help
 	  This feature lets CPU scheduler recognize task groups and control CPU
@@ -1335,7 +1345,8 @@ config CHECKPOINT_RESTORE
 
 config SCHED_AUTOGROUP
 	bool "Automatic process group scheduling"
-	depends on !SCHED_ALT
+	default n
+	depends on !BS_SCHED
 	select CGROUPS
 	select CGROUP_SCHED
 	select FAIR_GROUP_SCHED
@@ -1524,6 +1535,7 @@ config BPF
 menuconfig EXPERT
 	bool "Configure standard kernel features (expert users)"
 	# Unhide debug options, to make the on-by-default options visible
+	depends on !BS_SCHED
 	select DEBUG_KERNEL
 	help
 	  This option allows certain base kernel options and settings
