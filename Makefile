@@ -2,7 +2,7 @@
 VERSION = 5
 PATCHLEVEL = 14
 SUBLEVEL = 12
-EXTRAVERSION = -zen
+EXTRAVERSION = -Requiem
 NAME = The City on the Edge of Forever
 
 # *DOCUMENTATION*
